@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
-PROJECT(SDKTool)
+set(CMAKE_CXX_STANDARD 17)
+PROJECT(SDKTool LANGUAGES C CXX CUDA)
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
 set(VERSION_TINY  8)
@@ -129,21 +129,18 @@ target_link_libraries(ptc_tool
   ${OPENSSL_LIBRARIES}
 )
 
-# No support cuda and pcl compile, the error case will occur
-# error: unterminated argument list invoking macro "VTK_AUTOINIT1" 
-# find_package(CUDA )
-if(${CUDA_FOUND})
+if(CMAKE_CUDA_COMPILER)
 	set(CUDA_SOURCE_PROPERTY_FORMAT OBJ)
 	set(CUDA_SEPARABLE_COMPILATION ON)
 	include_directories(${CUDA_INCLUDE_DIRS})
 	set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-	set(CUDA_NVCC_FLAGS -arch=sm_61;-O3;-G;-g;-std=c++14)#根据具体GPU性能更改算力参数
+	set(CUDA_NVCC_FLAGS -arch=sm_87;-O3;-G;-g;-std=c++17)#根据具体GPU性能更改算力参数
 	link_directories($ENV{CUDA_PATH}/lib/x64)
   file(GLOB_RECURSE CURRENT_HEADERS  ../*.h ../*.hpp ../*.cuh)
   file(GLOB CURRENT_SOURCES  ../*.cpp ../*.cu)
   source_group("Include" FILES ${CURRENT_HEADERS}) 
   source_group("Source" FILES ${CURRENT_SOURCES}) 
-  CUDA_ADD_EXECUTABLE(pcl_tool_gpu ${CURRENT_HEADERS} ${CURRENT_SOURCES} 
+  add_executable(pcl_tool_gpu ${CURRENT_HEADERS} ${CURRENT_SOURCES} 
   ./pcl_tool.cu
   ../libhesai/UdpParserGpu/src/buffer.cu
   )
@@ -157,7 +154,7 @@ if(${CUDA_FOUND})
   ${OPENSSL_LIBRARIES}
   ${PCL_LIBRARIES} 
 )
-else(${CUDA_FOUND})
+else(CMAKE_CUDA_COMPILER)
 	MESSAGE(STATUS "cuda not found!")
-endif(${CUDA_FOUND})
+endif(CMAKE_CUDA_COMPILER)
 

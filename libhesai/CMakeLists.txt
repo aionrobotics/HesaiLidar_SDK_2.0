@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 project(CommonModules)
 if(POLICY CMP0074)
 cmake_policy(SET CMP0074 NEW)
@@ -60,7 +60,7 @@ if(WITH_PTCCLIENT)
                         ${OPENSSL_LIBRARIES}
                         )
     set_target_properties(ptcClient_lib 
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_PTCCLIENT)
     add_library(serialClient_lib 
     SerialClient/src/serial_client.cc
@@ -78,7 +78,7 @@ if(WITH_PTCPARSER)
     PtcParser/src/ptc_2_0_parser.cc
     PtcParser/ptc_parser.cc)
     set_target_properties(ptcParser_lib 
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_PTCPARSER)
 
 
@@ -87,7 +87,7 @@ if(WITH_CONTAINER)
     Container/src/ring_2d_shared.cc
     Container/src/ring_2dex.cc)
     set_target_properties(container_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_CONTAINER)
 
 if(WITH_LIDARBOARD)
@@ -104,7 +104,7 @@ if(WITH_LIDARBOARD)
         ptcClient_lib
         serialClient_lib)
     set_target_properties(source_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_LIDARBOARD)
 
 if(WITH_PLATUTIL)
@@ -112,7 +112,7 @@ if(WITH_PLATUTIL)
         ./src/plat_utils.cc
         ./src/auto_tick_count.cc)
     set_target_properties(platutils_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_PLATUTIL)
 
 
@@ -124,7 +124,7 @@ if(WITH_LOG)
     target_link_libraries(log_lib
         ${CMAKE_THREAD_LIBS_INIT})
     set_target_properties(log_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 endif(WITH_LOG)
 
 include_directories(${PROJECT_SOURCE_DIR})

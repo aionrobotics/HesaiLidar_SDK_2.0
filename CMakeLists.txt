@@ -76,7 +76,7 @@ if(CMAKE_CUDA_COMPILER)
 	set(CUDA_SEPARABLE_COMPILATION ON)
 	include_directories(${CUDA_INCLUDE_DIRS})
 	set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-	set(CUDA_NVCC_FLAGS -arch=sm_87;-O3;-G;-g;-std=c++14)#根据具体GPU性能更改算力参数
+	set(CUDA_NVCC_FLAGS -arch=sm_87;-O3;-G;-g;-std=c++17)#根据具体GPU性能更改算力参数
 	link_directories($ENV{CUDA_PATH}/lib/x64)
   file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp *.cuh)
   file(GLOB CURRENT_SOURCES  *.cpp *.cu)
