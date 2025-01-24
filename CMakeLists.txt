@@ -95,7 +95,7 @@ if(CMAKE_CUDA_COMPILER)
       ptcParser_lib
       ${OPENSSL_LIBRARIES}
   )
-  set_target_properties(sample_gpu PROPERTIES CUDA_ARCHITECTURES "87")
+  set_target_properties(sample_gpu PROPERTIES CUDA_ARCHITECTURES "86;87;89")
 else(CMAKE_CUDA_COMPILER)
 	MESSAGE(STATUS "cuda not found!")
 endif(CMAKE_CUDA_COMPILER)
