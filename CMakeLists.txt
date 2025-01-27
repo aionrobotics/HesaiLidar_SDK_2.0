@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
-PROJECT(Template)
+set(CMAKE_CXX_STANDARD 17)
+PROJECT(Template LANGUAGES CXX CUDA)
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
 set(VERSION_TINY  8)
@@ -69,34 +69,32 @@ target_link_libraries(sample
   ${OPENSSL_LIBRARIES}
 )
 
-# if install different cuda version, set the cuda path, like cuda-11.4
-# set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-11.4/)
-# find_package(CUDA REQUIRED)
-find_package(CUDA )
-if(${CUDA_FOUND})
+if(CMAKE_CUDA_COMPILER)
 	set(CUDA_SOURCE_PROPERTY_FORMAT OBJ)
 	set(CUDA_SEPARABLE_COMPILATION ON)
 	include_directories(${CUDA_INCLUDE_DIRS})
 	set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-	set(CUDA_NVCC_FLAGS -arch=sm_61;-O3;-G;-g;-std=c++14)#根据具体GPU性能更改算力参数
+	set(CUDA_NVCC_FLAGS -O3;-G;-g;-std=c++17)#根据具体GPU性能更改算力参数
 	link_directories($ENV{CUDA_PATH}/lib/x64)
   file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp *.cuh)
   file(GLOB CURRENT_SOURCES  *.cpp *.cu)
   file(GLOB CURRENT_SOURCES  *.cpp *.cu)
   source_group("Include" FILES ${CURRENT_HEADERS}) 
   source_group("Source" FILES ${CURRENT_SOURCES}) 
-  CUDA_ADD_EXECUTABLE(sample_gpu ${CURRENT_HEADERS} ${CURRENT_SOURCES} 
-  ./test/test.cu
-  ./libhesai/UdpParserGpu/src/buffer.cu)
+  add_executable(sample_gpu ${CURRENT_HEADERS} ${CURRENT_SOURCES} 
+    ./test/test.cu
+    ./libhesai/UdpParserGpu/src/buffer.cu
+  )
   target_link_libraries(sample_gpu
-  source_lib
-  container_lib
-  ptcClient_lib
-  log_lib
-  ptcParser_lib
-  ${OPENSSL_LIBRARIES}
-)
-else(${CUDA_FOUND})
+    source_lib
+    container_lib
+    ptcClient_lib
+    log_lib
+    ptcParser_lib
+    ${OPENSSL_LIBRARIES}
+  )
+  set_target_properties(sample_gpu PROPERTIES CUDA_ARCHITECTURES "86;87;89")
+else(CMAKE_CUDA_COMPILER)
 	MESSAGE(STATUS "cuda not found!")
-endif(${CUDA_FOUND})
+endif(CMAKE_CUDA_COMPILER)
 
