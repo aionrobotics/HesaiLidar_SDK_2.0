@@ -29,6 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "lidar.h"
 #include "udp_parser_gpu.h"
 #include "fault_message.h"
+#include <atomic>
 namespace hesai
 {
 namespace lidar
@@ -45,7 +46,7 @@ private:
   std::function<void(const uint8_t&, const u8Array_t&)> ptp_cb_;
   std::function<void(const FaultMessageInfo&)> fault_message_cb_;
   std::function<void(const LidarImuData&)> imu_cb_;
-  bool is_thread_runing_;
+  std::atomic<bool> is_thread_runing_;
   bool packet_loss_tool_; 
   uint32_t device_ip_address_;
   uint16_t device_udp_port_;
